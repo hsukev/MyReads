@@ -4,8 +4,6 @@ import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 
 class SearchBook extends Component {
-
-
     state = {
         books: []
     }
