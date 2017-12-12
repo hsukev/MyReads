@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
+import update from 'react-addons-update';
 
 class SearchBook extends Component {
     state = {
@@ -9,14 +10,25 @@ class SearchBook extends Component {
     }
 
     updateQuery = (query) => {
+		const {shelvedBooks} = this.props
         BooksAPI.search(query).then((books) => {
-            this.setState({books: books})
+			let mapped = []
+			for(let i = 0; i<books.length; i++){
+				for(let j = 0; j<shelvedBooks.length; j++){
+					if(books[i].id===shelvedBooks[j].id){
+						books[i]=update(books[i], {$merge: shelvedBooks[j]})
+						console.log(books[i])
+					}
+				}
+			}
+            this.setState({books : books})
 			console.log({books})
+
         })
     }
 
     render() {
-		const {books} = this.state
+        const {books} = this.state
         return (<div className="search-books">
             <div className="search-books-bar">
                 <Link className="close-search" to="/">Close</Link>
@@ -34,9 +46,7 @@ class SearchBook extends Component {
                 </div>
             </div>
             <div className="search-books-results">
-                <ol className="books-grid">{
-						books.map((book)=>(<Book books={book}/>))
-					}
+                <ol className="books-grid">{books.map((book) => (<Book key={book.id} books={book} firstShelve={this.props.firstShelve}/>))}
                 </ol>
             </div>
         </div>)

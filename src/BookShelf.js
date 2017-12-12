@@ -1,16 +1,15 @@
 import React, {Component} from 'react'
 import Book from './Book'
-import {Route, Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 class BookShelf extends Component {
 
     render() {
         const {shelvedBooks} = this.props
-		let currentlyReadingBooks = shelvedBooks.filter((b)=>b.shelf ==="currentlyReading")
-		let wantToReadBooks = shelvedBooks.filter((b)=>b.shelf ==="wantToRead")
-		let readBooks = shelvedBooks.filter((b)=>b.shelf ==="read")
-
-		console.log(currentlyReadingBooks)
+        let currentlyReadingBooks = shelvedBooks.filter((b) => b.shelf === "currentlyReading")
+        let wantToReadBooks = shelvedBooks.filter((b) => b.shelf === "wantToRead")
+        let readBooks = shelvedBooks.filter((b) => b.shelf === "read")
+		console.log(shelvedBooks)
 
         return (<div className="list-books">
             <div className="list-books-title">
@@ -21,24 +20,21 @@ class BookShelf extends Component {
                     <div className="bookshelf">
                         <h2 className="bookshelf-title">Currently Reading</h2>
                         <div className="bookshelf-books">
-                            <ol className="books-grid">{currentlyReadingBooks.map((book) => (<Book books={book}></Book>
-						))}
+                            <ol className="books-grid">{currentlyReadingBooks.map((book) => (<Book key={book.key} books={book} handleShelf={this.props.handleSelect}></Book>))}
                             </ol>
                         </div>
                     </div>
                     <div className="bookshelf">
                         <h2 className="bookshelf-title">Want to Read</h2>
                         <div className="bookshelf-books">
-							<ol className="books-grid">{wantToReadBooks.map((book) => (<Book books={book}></Book>
-						))}
-							</ol>
+                            <ol className="books-grid">{wantToReadBooks.map((book) => (<Book key={book.key} books={book} handleShelf={this.props.handleSelect}></Book>))}
+                            </ol>
                         </div>
                     </div>
                     <div className="bookshelf">
                         <h2 className="bookshelf-title">Read</h2>
                         <div className="bookshelf-books">
-							<ol className="books-grid">{readBooks.map((book) => (<Book books={book}></Book>
-						))}
+                            <ol className="books-grid">{readBooks.map((book) => (<Book key={book.key} books={book} handleShelf={this.props.handleSelect}></Book>))}
                             </ol>
                         </div>
                     </div>
