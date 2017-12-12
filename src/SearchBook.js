@@ -12,18 +12,14 @@ class SearchBook extends Component {
     updateQuery = (query) => {
 		const {shelvedBooks} = this.props
         BooksAPI.search(query).then((books) => {
-			let mapped = []
 			for(let i = 0; i<books.length; i++){
 				for(let j = 0; j<shelvedBooks.length; j++){
 					if(books[i].id===shelvedBooks[j].id){
 						books[i]=update(books[i], {$merge: shelvedBooks[j]})
-						console.log(books[i])
 					}
 				}
 			}
             this.setState({books : books})
-			console.log({books})
-
         })
     }
 

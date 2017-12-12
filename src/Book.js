@@ -7,7 +7,7 @@ function Book(props) {
         books.shelf
             ? handleShelf(books, e.target.value)
             : firstShelve(books.id, e.target.value)
-        }
+    }
     return (<li>
         <div className="book">
             <div className="book-top">
