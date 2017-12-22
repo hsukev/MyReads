@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 import update from 'react-addons-update';
+import {Debounce} from 'react-throttle';
 
 class SearchBook extends Component {
     state = {
@@ -10,16 +11,18 @@ class SearchBook extends Component {
     }
 
     updateQuery = (query) => {
-		const {shelvedBooks} = this.props
+        const {shelvedBooks} = this.props
         BooksAPI.search(query).then((books) => {
-			for(let i = 0; i<books.length; i++){
-				for(let j = 0; j<shelvedBooks.length; j++){
-					if(books[i].id===shelvedBooks[j].id){
-						books[i]=update(books[i], {$merge: shelvedBooks[j]})
-					}
-				}
-			}
-            this.setState({books : books})
+            for (let i = 0; i < books.length; i++) {
+                for (let j = 0; j < shelvedBooks.length; j++) {
+                    if (books[i].id === shelvedBooks[j].id) {
+                        books[i] = update(books[i], {$merge: shelvedBooks[j]})
+                    }
+                }
+            }
+            this.setState({books: books})
+        }).catch((error) => {
+            this.setState({books: []})
         })
     }
 
@@ -38,7 +41,9 @@ class SearchBook extends Component {
 				  you don't find a specific author or title. Every search is limited by search terms.
 				*/
                     }
-                    <input type="text" placeholder="Search by title or author" onChange={(event) => this.updateQuery(event.target.value)}/>
+                    <Debounce time="400" handler="onChange">
+                        <input type="text" placeholder="Search by title or author" onChange={(event) => this.updateQuery(event.target.value)}/>
+                    </Debounce>
                 </div>
             </div>
             <div className="search-books-results">

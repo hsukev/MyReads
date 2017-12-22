@@ -36,9 +36,7 @@ class BooksApp extends React.Component {
                 }
                 return stateBook
             })
-        }))
-        console.log(book)
-
+        })) 
     }
 
     render() {
